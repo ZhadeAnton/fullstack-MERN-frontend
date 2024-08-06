@@ -24,7 +24,17 @@ export const authApi = createApi({
         return response;
       },
     }),
+    register: query({
+      query: ({ fullname, email, password }) => ({
+        url: '/register',
+        method: 'POST',
+        body: { fullname, email, password },
+      }),
+      transformResponse: (response) => {
+        return response;
+      },
+    }),
   }),
 });
 
-export const { useLazyLoginQuery, useLoginQuery } = authApi;
+export const { useLazyLoginQuery, useLoginQuery, useRegisterQuery, useLazyRegisterQuery } = authApi;

@@ -1,7 +1,6 @@
 import React from 'react';
 import Button from '@mui/material/Button';
 import { Link, useNavigate } from 'react-router-dom';
-
 import styles from './Header.module.scss';
 import Container from '@mui/material/Container';
 import CookieService from '../../services/cookieService';
