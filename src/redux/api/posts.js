@@ -1,8 +1,18 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { getCookieToken } from './utils.js';
 
 export const postsApi = createApi({
   reducerPath: 'postsApi',
-  baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:3001' }),
+  baseQuery: fetchBaseQuery({
+    baseUrl: 'http://localhost:3001',
+    prepareHeaders: (headers) => {
+      const token = getCookieToken();
+      if (token) {
+        headers.set('Authorization', `Bearer ${token}`);
+      }
+      return headers;
+    },
+  }),
   endpoints: ({ query }) => ({
     getPosts: query({
       query: () => ({ url: '/posts' }),

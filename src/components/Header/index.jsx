@@ -1,14 +1,20 @@
 import React from 'react';
 import Button from '@mui/material/Button';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import styles from './Header.module.scss';
 import Container from '@mui/material/Container';
+import CookieService from '../../services/cookieService';
 
 export const Header = () => {
-  const isAuth = false;
+  const isAuth = Boolean(CookieService.getCookie('token'));
 
-  const onClickLogout = () => {};
+  const navigate = useNavigate();
+
+  const onClickLogout = () => {
+    CookieService.deleteCookie('token');
+    navigate('/');
+  };
 
   return (
     <div className={styles.root}>
