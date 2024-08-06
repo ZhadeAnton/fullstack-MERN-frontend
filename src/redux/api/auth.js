@@ -21,6 +21,15 @@ export const authApi = createApi({
         body: { email, password },
       }),
       transformResponse: (response) => {
+        return {
+          ...response,
+          userId: response._id,
+        };
+      },
+    }),
+    getClientData: query({
+      query: () => ({ url: '/me' }),
+      transformResponse: (response) => {
         return response;
       },
     }),
@@ -37,4 +46,11 @@ export const authApi = createApi({
   }),
 });
 
-export const { useLazyLoginQuery, useLoginQuery, useRegisterQuery, useLazyRegisterQuery } = authApi;
+export const {
+  useLazyLoginQuery,
+  useLoginQuery,
+  useRegisterQuery,
+  useLazyRegisterQuery,
+  useGetClientDataQuery,
+  useLazyGetClientDataQuery,
+} = authApi;

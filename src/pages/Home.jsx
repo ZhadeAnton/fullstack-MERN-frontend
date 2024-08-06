@@ -3,6 +3,7 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Grid from '@mui/material/Grid';
 import { useGetPostsQuery, useGetTagsQuery } from '../redux/api/posts.js';
+import { useGetClientDataQuery } from '../redux/api/auth.js';
 import { Post } from '../components/Post';
 import { TagsBlock } from '../components/TagsBlock';
 import { CommentsBlock } from '../components/CommentsBlock';
@@ -14,8 +15,11 @@ const defaultUserAvatarUrl =
   'https://res.cloudinary.com/practicaldev/image/fetch/s--uigxYVRB--/c_fill,f_auto,fl_progressive,h_50,q_auto,w_50/https://dev-to-uploads.s3.amazonaws.com/uploads/user/profile_image/187971/a5359a24-b652-46be-8898-2c5df32aa6e0.png';
 
 export const Home = () => {
-  const { data, isLoading } = useGetPostsQuery();
+  const { data: postsData, isLoading: isPostsLoading } = useGetPostsQuery();
   const { data: tagsData, isLoading: isTagsLoading } = useGetTagsQuery();
+  const { data: userData, isLoading: isUserDataLoading } = useGetClientDataQuery();
+
+  const isLoading = isPostsLoading || isTagsLoading || isUserDataLoading;
 
   return (
     <>
@@ -28,7 +32,7 @@ export const Home = () => {
           {isLoading ? (
             <PostsSkeleton />
           ) : (
-            data?.map((item) => (
+            postsData?.map((item) => (
               <Post
                 key={item._id}
                 id={item._id}
@@ -42,7 +46,7 @@ export const Home = () => {
                 viewsCount={item?.viewCount}
                 commentsCount={3}
                 tags={item?.tags || []}
-                isEditable
+                isEditable={item?.user._id === userData?.userId}
               />
             ))
           )}
