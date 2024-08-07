@@ -13,7 +13,7 @@ export const postsApi = createApi({
       return headers;
     },
   }),
-  endpoints: ({ query }) => ({
+  endpoints: ({ query, mutation }) => ({
     getPosts: query({
       query: () => ({ url: '/posts' }),
       transformResponse: (response) => {
@@ -32,6 +32,29 @@ export const postsApi = createApi({
         return response;
       },
     }),
+    createPost: mutation({
+      query: ({ id, ...postData }) => ({
+        url: '/posts',
+        method: 'POST',
+        body: postData,
+      }),
+      transformResponse: (response) => {
+        return response;
+      },
+    }),
+    uploadImage: mutation({
+      query: (data) => {
+        console.log('data', data);
+        return {
+          url: '/upload',
+          method: 'POST',
+          body: data,
+        };
+      },
+      transformResponse: (response) => {
+        return response;
+      },
+    }),
   }),
 });
 
@@ -42,4 +65,6 @@ export const {
   useLazyGetPostByIdQuery,
   useGetTagsQuery,
   useLazyGetTagsQuery,
+  useUploadImageMutation,
+  useCreatePostMutation,
 } = postsApi;
